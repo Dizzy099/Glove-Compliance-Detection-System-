@@ -1,0 +1,21 @@
+{
+  "filename": "test_blue_gloves.jpg",
+  "timestamp": "2025-09-28T00:37:13.031116",
+  "model_info": {
+    "type": "advanced_yolo",
+    "confidence_threshold": 0.3,
+    "device": "cpu"
+  },
+  "processing_steps": {
+    "raw_yolo_detections": 0,
+    "hand_regions_extracted": 0,
+    "initial_classifications": 0,
+    "final_detections": 0
+  },
+  "detections": [],
+  "summary": {
+    "total_detections": 0,
+    "gloved_hands": 0,
+    "bare_hands": 0
+  }
+}

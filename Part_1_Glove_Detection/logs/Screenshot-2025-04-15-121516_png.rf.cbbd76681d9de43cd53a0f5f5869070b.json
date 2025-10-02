@@ -1,0 +1,65 @@
+{
+  "filename": "Screenshot-2025-04-15-121516_png.rf.cbbd76681d9de43cd53a0f5f5869070b.jpg",
+  "detections": [
+    {
+      "label": "bare_hand",
+      "confidence": 0.624,
+      "bbox": [
+        114,
+        204,
+        181,
+        327
+      ]
+    },
+    {
+      "label": "bare_hand",
+      "confidence": 0.6,
+      "bbox": [
+        147,
+        187,
+        249,
+        274
+      ]
+    },
+    {
+      "label": "bare_hand",
+      "confidence": 0.565,
+      "bbox": [
+        244,
+        75,
+        331,
+        226
+      ]
+    },
+    {
+      "label": "bare_hand",
+      "confidence": 0.542,
+      "bbox": [
+        157,
+        54,
+        287,
+        162
+      ]
+    },
+    {
+      "label": "bare_hand",
+      "confidence": 0.537,
+      "bbox": [
+        114,
+        84,
+        200,
+        301
+      ]
+    },
+    {
+      "label": "bare_hand",
+      "confidence": 0.525,
+      "bbox": [
+        215,
+        204,
+        283,
+        327
+      ]
+    }
+  ]
+}

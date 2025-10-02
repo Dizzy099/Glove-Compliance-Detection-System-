@@ -1,0 +1,95 @@
+{
+  "filename": "Screenshot-2025-04-26-062143_png.rf.cf4678811e5986efd9ee50a8625744a7.jpg",
+  "detections": [
+    {
+      "label": "gloved_hand",
+      "confidence": 0.597,
+      "bbox": [
+        474,
+        219,
+        564,
+        276
+      ]
+    },
+    {
+      "label": "bare_hand",
+      "confidence": 0.584,
+      "bbox": [
+        314,
+        189,
+        362,
+        302
+      ]
+    },
+    {
+      "label": "gloved_hand",
+      "confidence": 0.572,
+      "bbox": [
+        55,
+        140,
+        134,
+        308
+      ]
+    },
+    {
+      "label": "gloved_hand",
+      "confidence": 0.559,
+      "bbox": [
+        94,
+        117,
+        214,
+        236
+      ]
+    },
+    {
+      "label": "bare_hand",
+      "confidence": 0.555,
+      "bbox": [
+        244,
+        189,
+        291,
+        302
+      ]
+    },
+    {
+      "label": "bare_hand",
+      "confidence": 0.534,
+      "bbox": [
+        174,
+        140,
+        254,
+        308
+      ]
+    },
+    {
+      "label": "bare_hand",
+      "confidence": 0.523,
+      "bbox": [
+        444,
+        230,
+        504,
+        310
+      ]
+    },
+    {
+      "label": "gloved_hand",
+      "confidence": 0.504,
+      "bbox": [
+        267,
+        173,
+        338,
+        254
+      ]
+    },
+    {
+      "label": "gloved_hand",
+      "confidence": 0.503,
+      "bbox": [
+        534,
+        230,
+        594,
+        310
+      ]
+    }
+  ]
+}

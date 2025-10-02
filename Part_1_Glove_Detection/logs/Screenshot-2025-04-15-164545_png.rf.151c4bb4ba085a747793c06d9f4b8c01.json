@@ -1,0 +1,35 @@
+{
+  "filename": "Screenshot-2025-04-15-164545_png.rf.151c4bb4ba085a747793c06d9f4b8c01.jpg",
+  "detections": [
+    {
+      "label": "bare_hand",
+      "confidence": 0.611,
+      "bbox": [
+        276,
+        57,
+        421,
+        308
+      ]
+    },
+    {
+      "label": "bare_hand",
+      "confidence": 0.548,
+      "bbox": [
+        228,
+        107,
+        324,
+        459
+      ]
+    },
+    {
+      "label": "bare_hand",
+      "confidence": 0.544,
+      "bbox": [
+        373,
+        107,
+        470,
+        459
+      ]
+    }
+  ]
+}

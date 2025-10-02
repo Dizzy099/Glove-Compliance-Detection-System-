@@ -1,0 +1,31 @@
+{
+  "filename": "test_images.jpg",
+  "timestamp": "2025-09-28T00:32:54.523901",
+  "detections": [
+    {
+      "label": "bare_hand",
+      "confidence": 0.95,
+      "bbox": [
+        310.0,
+        130.0,
+        416.0,
+        429.0
+      ]
+    },
+    {
+      "label": "gloved_hand",
+      "confidence": 0.95,
+      "bbox": [
+        0.0,
+        0.0,
+        640.0,
+        640.0
+      ]
+    }
+  ],
+  "summary": {
+    "total_detections": 2,
+    "gloved_hands": 1,
+    "bare_hands": 1
+  }
+}

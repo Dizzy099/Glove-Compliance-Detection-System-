@@ -1,0 +1,175 @@
+{
+  "filename": "Screenshot-2025-04-26-064319_png.rf.bd341cd770f96d269301a6db1f8ec576.jpg",
+  "detections": [
+    {
+      "label": "gloved_hand",
+      "confidence": 0.7749999761581421,
+      "bbox": [
+        139,
+        192,
+        166,
+        250
+      ]
+    },
+    {
+      "label": "bare_hand",
+      "confidence": 0.6679999828338623,
+      "bbox": [
+        205,
+        226,
+        229,
+        356
+      ]
+    },
+    {
+      "label": "bare_hand",
+      "confidence": 0.643,
+      "bbox": [
+        157,
+        203,
+        175,
+        285
+      ]
+    },
+    {
+      "label": "gloved_hand",
+      "confidence": 0.623,
+      "bbox": [
+        458,
+        197,
+        542,
+        376
+      ]
+    },
+    {
+      "label": "bare_hand",
+      "confidence": 0.617,
+      "bbox": [
+        140,
+        265,
+        201,
+        518
+      ]
+    },
+    {
+      "label": "bare_hand",
+      "confidence": 0.615,
+      "bbox": [
+        180,
+        245,
+        302,
+        442
+      ]
+    },
+    {
+      "label": "bare_hand",
+      "confidence": 0.613,
+      "bbox": [
+        246,
+        252,
+        293,
+        472
+      ]
+    },
+    {
+      "label": "gloved_hand",
+      "confidence": 0.595,
+      "bbox": [
+        49,
+        265,
+        109,
+        518
+      ]
+    },
+    {
+      "label": "gloved_hand",
+      "confidence": 0.581,
+      "bbox": [
+        131,
+        203,
+        148,
+        285
+      ]
+    },
+    {
+      "label": "gloved_hand",
+      "confidence": 0.574,
+      "bbox": [
+        261,
+        284,
+        343,
+        560
+      ]
+    },
+    {
+      "label": "gloved_hand",
+      "confidence": 0.574,
+      "bbox": [
+        514,
+        232,
+        570,
+        484
+      ]
+    },
+    {
+      "label": "bare_hand",
+      "confidence": 0.571,
+      "bbox": [
+        269,
+        221,
+        341,
+        378
+      ]
+    },
+    {
+      "label": "bare_hand",
+      "confidence": 0.568,
+      "bbox": [
+        169,
+        226,
+        193,
+        356
+      ]
+    },
+    {
+      "label": "bare_hand",
+      "confidence": 0.5519999861717224,
+      "bbox": [
+        181,
+        208,
+        217,
+        300
+      ]
+    },
+    {
+      "label": "bare_hand",
+      "confidence": 0.519,
+      "bbox": [
+        431,
+        232,
+        486,
+        484
+      ]
+    },
+    {
+      "label": "gloved_hand",
+      "confidence": 0.517,
+      "bbox": [
+        79,
+        229,
+        170,
+        410
+      ]
+    },
+    {
+      "label": "gloved_hand",
+      "confidence": 0.508,
+      "bbox": [
+        317,
+        252,
+        365,
+        472
+      ]
+    }
+  ]
+}
