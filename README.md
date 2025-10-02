@@ -1,4 +1,4 @@
-# Glove Detection System - Technical Assessment
+# Glove Detection System
 
 ## Overview
 
