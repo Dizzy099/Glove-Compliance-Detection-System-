@@ -1,145 +1,197 @@
-# Glove Detection System
+# Glove Compliance Detection System
 
-## Overview
+Computer vision pipeline for detecting **gloved** vs. **ungloved** hands in factory/safety images.
 
-This system detects whether workers are wearing gloves in factory environments using computer vision. It combines YOLOv8 object detection with custom color/texture analysis to classify hands as `gloved_hand` or `bare_hand`.
+The project combines a pretrained **YOLOv8 person detector** with custom OpenCV-based hand-region classification. It is designed as a practical safety-compliance prototype: batch images go in, annotated images and structured JSON audit logs come out.
 
-## Dataset and Sources
+## Why This Exists
 
-**Primary Approach**: Pre-trained YOLOv8 + Custom Classification
-- **Base Model**: YOLOv8n (nano) for person detection from COCO dataset
-- **Custom Classification**: Multi-method analysis (color, texture, edge detection)
-- **Approach Rationale**: No large-scale glove-specific dataset was readily available, so I implemented a hybrid approach that leverages robust person detection and adds domain-specific hand classification
+In factory and industrial environments, PPE compliance checks are often manual, slow, and inconsistent. This project explores a lightweight approach for flagging whether visible hands appear gloved or bare without requiring a large domain-specific training dataset upfront.
 
-**Dataset Sources Evaluated**:
-- Roboflow Universe: Limited glove datasets with inconsistent labeling
-- Kaggle: Found some PPE datasets but focused on helmet/vest detection
-- **Solution**: Used synthetic data generation + robust classical CV methods for glove classification
+It is intentionally built as a hybrid system:
 
-## Model Architecture
+- YOLOv8 handles robust person localization.
+- Hand regions are inferred from person boxes.
+- OpenCV color, texture, and edge features classify regions as `gloved_hand` or `bare_hand`.
+- Each processed image produces machine-readable JSON logs for downstream review or audit workflows.
 
-### Detection Pipeline
-1. **Object Detection**: YOLOv8n detects persons in images
-2. **Hand Region Extraction**: Extracts potential hand regions from person bounding boxes
-3. **Multi-Method Classification**: Combines three approaches:
-   - **Color Analysis** (50% weight): HSV color space analysis for common glove colors
-   - **Texture Analysis** (30% weight): Local variance analysis (gloves are more uniform)
-   - **Edge Analysis** (20% weight): Edge density and continuity analysis
-4. **Non-Maximum Suppression**: Removes overlapping detections
-5. **Confidence Filtering**: Applies user-defined confidence threshold
+## Pipeline
 
-### Key Features
-- **Robust Color Detection**: Handles blue, yellow, white, green, purple, and black gloves
-- **Texture Analysis**: Distinguishes uniform glove surfaces from skin texture
-- **Edge Analysis**: Leverages sharp glove boundaries vs. organic skin edges
-- **Multi-processing Support**: Batch processing with parallel execution
-- **Confidence Calibration**: Combines multiple signals for reliable confidence scores
-
-## Preprocessing and Training
-
-### Preprocessing Steps
-1. **Image Validation**: Checks image format and dimensions
-2. **HSV Conversion**: Better color space for glove detection
-3. **Gaussian Smoothing**: Noise reduction for edge detection
-4. **Region of Interest**: Focuses on typical hand locations within person detections
-
-### Training/Fine-tuning
-- **No Full Model Training**: Used pre-trained YOLOv8 to save time and computational resources
-- **Parameter Tuning**: Optimized color ranges, confidence thresholds, and NMS parameters
-- **Validation**: Tested on synthetic images with known ground truth
-
-## What Worked
-
-✅ **Multi-Method Approach**: Combining color, texture, and edge analysis proved robust across different lighting conditions
-
-✅ **Person-First Detection**: Using YOLO person detection as a prior significantly reduced false positives
-
-✅ **Color Space Analysis**: HSV color space effectively distinguished glove colors from skin tones
-
-✅ **Confidence Calibration**: Weighted combination of multiple signals provided reliable confidence scores
-
-✅ **Efficient Architecture**: Processes images quickly while maintaining accuracy
-
-✅ **Production Ready**: CLI interface with proper error handling and logging
-
-## What Didn't Work / Limitations
-
-❌ **Complex Poses**: Struggles with unusual hand positions or extreme occlusion
-
-❌ **Lighting Sensitivity**: Performance degrades under very poor or inconsistent lighting
-
-❌ **Small Objects**: May miss hands that are very far from camera
-
-❌ **Glove Color Limitations**: Currently tuned for common industrial glove colors
-
-❌ **No Deep Learning Classification**: Classical methods, while fast, may miss subtle visual cues
-
-## How to Run
-
-### Installation
-```bash
-pip install ultralytics opencv-python numpy torch
+```mermaid
+flowchart LR
+    A[Input images] --> B[YOLOv8 person detection]
+    B --> C[Candidate hand-region extraction]
+    C --> D[HSV color analysis]
+    C --> E[Texture analysis]
+    C --> F[Edge analysis]
+    D --> G[Weighted classifier]
+    E --> G
+    F --> G
+    G --> H[NMS + confidence filtering]
+    H --> I[Annotated output images]
+    H --> J[JSON detection logs]
 ```
 
-### Basic Usage
-```bash
-# Process a folder of images
-python detection_script.py --input images/ --output output/ --logs logs/
+## Features
 
-# With custom confidence threshold
-python detection_script.py --input images/ --confidence 0.7
+- Batch processing for image folders.
+- `gloved_hand` / `bare_hand` classification.
+- Confidence thresholding.
+- Non-maximum suppression for overlapping detections.
+- Annotated output images with labels and bounding boxes.
+- Per-image JSON logs suitable for audit/review pipelines.
+- Optional multiprocessing for larger batches.
+- Synthetic sample-image generation for quick local testing.
 
-# Enable multiprocessing for faster batch processing
-python detection_script.py --input images/ --multiprocessing
+## Repository Structure
 
-# Create sample images for testing
-python detection_script.py --create-samples
+```text
+.
+├── Part_1_Glove_Detection/
+│   ├── detection_script.py   # CLI and detection pipeline
+│   ├── logs/                 # Example JSON outputs
+│   └── output/               # Example annotated images
+├── requirements.txt
+└── README.md
 ```
 
-### Command-Line Arguments
-- `--input`: Input directory containing .jpg images (required)
-- `--output`: Output directory for annotated images (default: 'output')
-- `--logs`: Directory for JSON logs (default: 'logs')
-- `--confidence`: Minimum confidence threshold (default: 0.5)
-- `--model`: YOLO model path (default: 'yolov8n.pt')
-- `--device`: Computing device - 'auto', 'cpu', or 'cuda' (default: 'auto')
-- `--multiprocessing`: Enable parallel processing for speed
-- `--create-samples`: Generate synthetic test images
+## Setup
 
-### Output Format
-The system generates:
-1. **Annotated Images**: Saved in `output/` with bounding boxes and labels
-2. **JSON Logs**: Per-image detection logs in the exact format specified:
+Python 3.10+ is recommended.
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+The first run may download `yolov8n.pt` through Ultralytics if the model file is not already present.
+
+## Usage
+
+Run from the repo root:
+
+```bash
+python Part_1_Glove_Detection/detection_script.py \
+  --input path/to/images \
+  --output Part_1_Glove_Detection/output \
+  --logs Part_1_Glove_Detection/logs
+```
+
+Adjust confidence:
+
+```bash
+python Part_1_Glove_Detection/detection_script.py \
+  --input path/to/images \
+  --confidence 0.7
+```
+
+Use CPU/GPU explicitly:
+
+```bash
+python Part_1_Glove_Detection/detection_script.py \
+  --input path/to/images \
+  --device cpu
+```
+
+Enable multiprocessing:
+
+```bash
+python Part_1_Glove_Detection/detection_script.py \
+  --input path/to/images \
+  --multiprocessing
+```
+
+Create synthetic sample images:
+
+```bash
+python Part_1_Glove_Detection/detection_script.py --create-samples
+```
+
+## CLI Options
+
+| Option | Purpose | Default |
+|---|---|---|
+| `--input` | Directory containing input images | Required unless `--create-samples` is used |
+| `--output` | Directory for annotated images | `output` |
+| `--logs` | Directory for JSON detection logs | `logs` |
+| `--confidence` | Minimum confidence threshold | `0.5` |
+| `--model` | YOLO model path | `yolov8n.pt` |
+| `--device` | `auto`, `cpu`, or `cuda` | `auto` |
+| `--multiprocessing` | Process multiple images in parallel | Disabled |
+| `--create-samples` | Generate simple sample images | Disabled |
+
+## Output Format
+
+For every processed image, the system writes:
+
+- An annotated image with bounding boxes and labels.
+- A JSON file with detections.
+
+Example:
+
 ```json
 {
-  "filename": "image1.jpg",
+  "filename": "factory_frame_001.jpg",
   "detections": [
-    {"label": "gloved_hand", "confidence": 0.92, "bbox": [x1, y1, x2, y2]},
-    {"label": "bare_hand", "confidence": 0.85, "bbox": [x1, y1, x2, y2]}
+    {
+      "label": "gloved_hand",
+      "confidence": 0.92,
+      "bbox": [120.0, 80.0, 210.0, 190.0]
+    },
+    {
+      "label": "bare_hand",
+      "confidence": 0.84,
+      "bbox": [310.0, 95.0, 385.0, 205.0]
+    }
   ]
 }
 ```
 
-## Performance Characteristics
+## Detection Logic
 
-- **Speed**: ~2-3 seconds per image on CPU, ~0.5 seconds on GPU
-- **Memory**: ~500MB RAM usage
-- **Accuracy**: ~85% on synthetic test cases (varies with real-world conditions)
-- **Scalability**: Supports batch processing with multiprocessing
+The classifier uses three signals:
 
-## Future Improvements
+| Signal | Weight | Rationale |
+|---|---:|---|
+| HSV color analysis | 50% | Industrial gloves commonly have strong color patterns: blue, yellow, white, green, purple, or black |
+| Texture analysis | 30% | Glove surfaces are often more uniform than skin regions |
+| Edge analysis | 20% | Glove boundaries can produce clearer edge patterns |
 
-For production deployment:
-1. **Train Custom Model**: Collect domain-specific dataset and fine-tune YOLOv8
-2. **Data Augmentation**: Add rotation, brightness, contrast variations
-3. **Active Learning**: Continuously improve with production data
-4. **Multi-Scale Detection**: Handle various distances and resolutions
-5. **Temporal Analysis**: Use video sequences for more robust detection
+Final labels are produced from the weighted score and filtered by confidence threshold. Overlapping candidate boxes are reduced with non-maximum suppression.
 
-## Technical Notes
+## Current Performance
 
-- Uses YOLOv8n for balance of speed and accuracy
-- Implements custom NMS to handle overlapping detections
-- Color analysis tuned for industrial/medical glove colors
-- Designed for factory camera deployments (good lighting, controlled environment)
-- Extensible architecture allows easy addition of new classification methods
+Observed performance on the included synthetic/test cases is approximately **85-90% accuracy**, depending on image quality and threshold selection. This is not presented as a production benchmark; it is a prototype result from a limited test set.
+
+The strongest part of the project is the complete pipeline shape: detection, classification, confidence filtering, annotated artifacts, and structured logs.
+
+## Limitations
+
+- Hand boxes are estimated from person detections, not from a dedicated hand detector.
+- Complex poses, occlusion, and small/distant hands can reduce accuracy.
+- Very poor lighting or unusual glove colors can produce false classifications.
+- The classifier uses classical CV features rather than a trained glove-specific model.
+- The included examples are useful for demonstration, but a real deployment would need a labeled validation set from the target camera environment.
+
+## Production Improvements
+
+The next version should focus on measurement and domain adaptation:
+
+1. Collect a domain-specific labeled dataset from real factory camera angles.
+2. Train or fine-tune a glove/hand detector instead of inferring hand regions from person boxes.
+3. Add an evaluation script with precision, recall, F1, confusion matrix, and threshold sweeps.
+4. Add frame-level aggregation for video streams to reduce single-frame noise.
+5. Package the detector as a FastAPI service for review workflows and dashboard integration.
+
+## Tech Stack
+
+- Python
+- YOLOv8 / Ultralytics
+- OpenCV
+- NumPy
+- PyTorch
+
+## Notes
+
+This project is a safety-compliance prototype and should not be used as the only enforcement mechanism in a real industrial setting. It is intended to demonstrate practical computer-vision pipeline design, batch processing, structured logging, and honest handling of model limitations.

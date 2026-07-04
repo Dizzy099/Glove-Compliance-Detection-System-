@@ -502,7 +502,7 @@ Examples:
         """
     )
     
-    parser.add_argument('--input', required=True, 
+    parser.add_argument('--input',
                        help='Input directory containing .jpg images')
     parser.add_argument('--output', default='output',
                        help='Output directory for annotated images')
@@ -529,6 +529,10 @@ Examples:
         create_sample_images()
         return
     
+    if not args.input:
+        logger.error("Input directory is required unless --create-samples is used")
+        return
+
     # Validate input directory
     if not os.path.exists(args.input):
         logger.error(f"Input directory does not exist: {args.input}")
